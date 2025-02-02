@@ -121,12 +121,12 @@ function App() {
   }, []);
 
   return (
-    <div className=" flex w-full h-screen justify-center items-center mx-auto border-separate border-spacing-5 ">
-      <table className="table-auto border-separate sm:border-spacing-5 border-spacing-1 w-full">
-      <tbody className="p-2 ">
+    <div className=" flex w-full h-full justify-center items-center mx-auto border-separate border-spacing-5 overflow-y-scroll ">
+      <table className="table-auto border-separate sm:border-spacing-5 sm-md:border-spacing-1 border-spacing-0 w-full">
+      <tbody >
         {Array.isArray(shuffledArray) && shuffledArray.length > 0 ? (
           shuffledArray.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={rowIndex} >
               {Array.isArray(row) ? (
                 row.map((card, cellIndex) => {
                   const isCardClicked = clickedCells.some(
@@ -139,7 +139,7 @@ function App() {
                    <td
                      key={cellIndex}
                      onClick={()=> handleClick(card.id , checkedArray, rowIndex, cellIndex)}
-                     className={`table-cell sm:w-36 sm:h-36 w-4 h-4 bg-pink-200  sm:p-4 p-0  text-[8px] sm:text-xl ${
+                     className={`table-cell md:w-36 md:h-32  h-72 w-11 text-xs sm-md:h-44 sm-md:w-14 sm-md:text-xl bg-pink-50 rounded-xl border-2 shadow-pink-400 border-pink-100  sm:p-4 p-0  md:text-2xl ${
                        card.id !== fixedIndex 
                          ? "cursor-pointer"
                          : "disabled cursor-not-allowed"
