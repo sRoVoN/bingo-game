@@ -1,0 +1,223 @@
+import { useEffect, useState } from "react";
+import useSound from 'use-sound';
+
+const cardsArray = [
+  {
+    id: 0,
+    name: "Card 1",
+  },
+  {
+    id: 1,
+    name: "Card 2",
+  },
+  {
+    id: 2,
+    name: "Card 3",
+  },
+  {
+    id: 3,
+    name: "Card 4",
+  },
+  {
+    id: 4,
+    name: "Card 5",
+  },
+  {
+    id: 5,
+    name: "Card 6",
+  },
+  {
+    id: 6,
+    name: "Card 7",
+  },
+  {
+    id: 7,
+    name: "Card 8",
+  },
+  {
+    id: 8,
+    name: "Card 9",
+  },
+  {
+    id: 9,
+    name: "Card 10",
+  },
+  {
+    id: 10,
+    name: "Card 11",
+  },
+  {
+    id: 11,
+    name: "Card 12",
+  },
+  {
+    id: 12,
+    name: "Card 13",
+  },
+  {
+    id: 13,
+    name: "Card 14",
+  },
+  {
+    id: 14,
+    name: "Card 15",
+  },
+  {
+    id: 15,
+    name: "Salam",
+  },
+  {
+    id: 16,
+    name: "Card 17",
+  },
+  {
+    id: 17,
+    name: "Card 18",
+  },
+  {
+    id: 18,
+    name: "Card 19",
+  },
+  {
+    id: 19,
+    name: "TCard 20",
+  },
+  {
+    id: 20,
+    name: "Card 21",
+  },
+  {
+    id: 21,
+    name: "Card 22",
+  },
+  {
+    id: 22,
+    name: "Carf 23",
+  },
+  {
+    id: 23,
+    name: "Card 24",
+  },
+  {
+    id: 24,
+    name: "Card 25",
+  },
+];
+
+function App() {
+  const [activeCard, setActiveCard] = useState();
+  const [shuffledArray, setShuffledArray] = useState(cardsArray);
+  const [shaking, setShaking] = useState(null);
+  const [clickedCards, setClickedCards] = useState([]);
+
+  const fixedIndex = 15;
+  const matched = [
+    [{index: 0, rowIndex: 0, cellIndex: 0 },
+      {index: 1, rowIndex: 0, cellIndex: 1 },
+      {index:2, rowIndex: 0, cellIndex: 2},
+      {index:3, rowIndex: 0, cellIndex: 3},
+      {index:4, rowIndex: 0, cellIndex: 4}],
+    [5,6,7,8,9],
+    [10, 11, 13,14],
+    [15, 16, 17, 18, 19],
+    [20, 21, 22, 23, 24],
+    [4, 8, 16, 20],
+    [0, 6, 18, 24],
+    [0, 5, 10, 15, 20],
+    [1, 6, 11, 16, 21],
+    [2, 7, 17, 22],
+    [3, 8, 13, 18, 23],
+    [4, 9, 14, 19, 24]
+  ] 
+
+  const handleClick = (id) => {
+    setShaking(id);
+
+    setActiveCard(id);
+    setClickedCards((prev) => [...prev, id]);
+    console.log(id);
+  };
+  const shuffleArray = (array) => {
+    const shuffledArray = [...array]; // Make a copy to avoid mutating the original
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Random index between 0 and i
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ]; // Swap elements
+    }
+    return shuffledArray;
+  };
+
+  const items = [];
+  for (let i = 0; i < cardsArray.length; i++) {
+    items.push(
+      <tr className="w-full bg-slate-400" key={cardsArray[i]}>
+        {cardsArray[i].name}
+      </tr>
+    );
+  }
+  const shuffleArrayWithFixefCard = (array, fixedIndex) => {
+    const fixedCard = array[fixedIndex];
+    const cardsToShuffle = array.filter((_, index) => index !== fixedIndex);
+    const shuffleCards = shuffleArray(cardsToShuffle);
+    const middleIndex = Math.floor(shuffleCards.length / 2);
+    shuffleCards.splice(middleIndex, 0, fixedCard);
+
+    return shuffleCards;
+  };
+  const chunkArray = (array, chunkSize) => {
+    let result = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+  useEffect(() => {
+    const shuffled = shuffleArrayWithFixefCard(cardsArray, fixedIndex);
+    const chunked = chunkArray(shuffled, 5);
+    console.log(chunked); // Log the chunked array for debugging
+    setShuffledArray(chunked);
+  }, []);
+
+  return (
+    <div className=" flex w-full h-screen justify-center items-center mx-auto border-separate border-spacing-5 ">
+      <table className="border-separate border-spacing-5">
+      <tbody>
+        {Array.isArray(shuffledArray) && shuffledArray.length > 0 ? (
+          shuffledArray.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {Array.isArray(row) ? (
+                row.map((card) => (
+                  <td
+                    key={card.id}
+                    onClick={()=> handleClick(card.id)}
+                    className={`table-cell p-5 h-16 bg-slate-400 ${
+                      card.id !== fixedIndex 
+                        ? "cursor-pointer"
+                        : "disabled cursor-not-allowed"
+                    }
+                ${shaking === card.id  ? "shake line-through text-red-500" : ""}
+                ${clickedCards.includes(card.id) ? "line-through text-gray-500" : ""}
+                `}
+                  >
+                    {card.name}
+                  </td>
+                ))
+              ) : (
+                <td colSpan={5}>Invalid row data</td> // If row is not an array, show a message
+              )}
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={5}>No cards available</td>
+          </tr>
+        )}
+      </tbody>
+      </table> 
+    </div>
+  );
+}
+
+export default App;
