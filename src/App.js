@@ -139,13 +139,14 @@ function App() {
                    <td
                      key={cellIndex}
                      onClick={()=> handleClick(card.id , checkedArray, rowIndex, cellIndex)}
-                     className={`table-cell md:w-36 md:h-32  h-72 w-11 text-xs sm-md:h-44 sm-md:w-14 sm-md:text-xl bg-pink-50 rounded-xl border-2 shadow-pink-400 border-pink-100  sm:p-4 p-0  md:text-2xl ${
+                     className={`table-cell md:w-36 md:h-32  h-32 w-11 text-xs sm-md:h-44 sm-md:w-14 sm-md:text-xl rounded-xl border-2 shadow-pink-400 border-pink-100  sm:p-4 p-0  md:text-2xl ${
                        card.id !== fixedIndex 
                          ? "cursor-pointer"
                          : "disabled cursor-not-allowed"
                      }
                  ${shaking === card.id && card.id !== 15  ? "shake line-through text-red-500" : ""}
                  ${isCardClicked && card.id !==15 ? "line-through text-gray-500" : ""}
+                 ${card.id === fixedIndex ? "bg-pink-400" : " bg-pink-50"}
                  `}
                    >
                      {card.name}
