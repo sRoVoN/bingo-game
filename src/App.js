@@ -139,7 +139,7 @@ function App() {
                    <td
                      key={cellIndex}
                      onClick={()=> handleClick(card.id , checkedArray, rowIndex, cellIndex)}
-                     className={`table-cell sm:w-36 sm:h-36 w-4 h-4 bg-pink-200  sm:p-3 p-0  text-[8px] sm:text-xl ${
+                     className={`table-cell sm:w-36 sm:h-36 w-4 h-4 bg-pink-200  sm:p-4 p-0  text-[8px] sm:text-xl ${
                        card.id !== fixedIndex 
                          ? "cursor-pointer"
                          : "disabled cursor-not-allowed"
